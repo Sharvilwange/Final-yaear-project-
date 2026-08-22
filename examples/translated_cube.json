@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0",
+  "scene": {
+    "name": "translated_cube",
+    "units": "meters"
+  },
+  "operations": [
+    {
+      "id": "op_001",
+      "type": "create_box",
+      "parameters": {
+        "id": "box_01",
+        "width": 1.0,
+        "height": 1.0,
+        "depth": 1.0
+      }
+    },
+    {
+      "id": "op_002",
+      "type": "translate",
+      "target": "box_01",
+      "parameters": {
+        "target": "box_01",
+        "offset": [2.0, 1.0, 0.0]
+      }
+    }
+  ],
+  "constraints": [],
+  "validation": {
+    "expected_object_count": 1,
+    "expected_operation_count": 2
+  }
+}

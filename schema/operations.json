@@ -1,0 +1,101 @@
+{
+    "version": "1.0",
+    "operations": {
+        "create_box": {
+            "parameters": [
+                "id",
+                "width",
+                "height",
+                "depth"
+            ]
+        },
+        "create_sphere": {
+            "parameters": [
+                "id",
+                "radius"
+            ]
+        },
+        "create_cylinder": {
+            "parameters": [
+                "id",
+                "radius",
+                "height"
+            ]
+        },
+        "create_cone": {
+            "parameters": [
+                "id",
+                "radius",
+                "height"
+            ]
+        },
+        "create_plane": {
+            "parameters": [
+                "id",
+                "width",
+                "height"
+            ]
+        },
+        "create_torus": {
+            "parameters": [
+                "id",
+                "radius",
+                "tube"
+            ]
+        },
+        "translate": {
+            "parameters": [
+                "target",
+                "offset"
+            ]
+        },
+        "rotate": {
+            "parameters": [
+                "target",
+                "rotation"
+            ]
+        },
+        "scale": {
+            "parameters": [
+                "target",
+                "factor"
+            ]
+        },
+        "duplicate": {
+            "parameters": [
+                "target",
+                "new_id"
+            ]
+        },
+        "repeat": {
+            "parameters": [
+                "target",
+                "count",
+                "offset"
+            ]
+        },
+        "mirror": {
+            "parameters": [
+                "target",
+                "axis"
+            ]
+        },
+        "group": {
+            "parameters": [
+                "id",
+                "objects"
+            ]
+        },
+        "combine": {
+            "parameters": [
+                "objects"
+            ]
+        },
+        "extrude": {
+            "parameters": [
+                "target",
+                "distance"
+            ]
+        }
+    }
+}

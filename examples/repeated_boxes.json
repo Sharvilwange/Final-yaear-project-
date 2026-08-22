@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.0",
+  "scene": {
+    "name": "repeated_boxes",
+    "units": "meters"
+  },
+  "operations": [
+    {
+      "id": "op_001",
+      "type": "create_box",
+      "parameters": {
+        "id": "box_base",
+        "width": 0.8,
+        "height": 0.8,
+        "depth": 0.8
+      }
+    },
+    {
+      "id": "op_002",
+      "type": "repeat",
+      "target": "box_base",
+      "parameters": {
+        "target": "box_base",
+        "count": 4,
+        "offset": [1.5, 0.0, 0.0]
+      }
+    }
+  ],
+  "constraints": [],
+  "validation": {
+    "expected_object_count": 1,
+    "expected_operation_count": 2
+  }
+}

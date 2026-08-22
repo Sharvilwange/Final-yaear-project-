@@ -1,0 +1,117 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AI Procedural 3D Scene",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "scene",
+    "operations",
+    "constraints"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0"
+    },
+    "scene": {
+      "type": "object",
+      "required": [
+        "name",
+        "units"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "units": {
+          "type": "string",
+          "enum": [
+            "meters",
+            "centimeters",
+            "millimeters"
+          ]
+        }
+      }
+    },
+    "operations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/operation"
+      }
+    },
+    "constraints": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/constraint"
+      }
+    }
+  },
+  "$defs": {
+    "vector3": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      },
+      "minItems": 3,
+      "maxItems": 3
+    },
+    "operation": {
+  "type": "object",
+  "required": [
+    "operation",
+    "parameters"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "operation": {
+      "type": "string",
+      "enum": [
+        "create_box",
+        "create_sphere",
+        "create_cylinder",
+        "create_cone",
+        "create_plane",
+        "create_torus",
+        "translate",
+        "rotate",
+        "scale",
+        "duplicate",
+        "repeat",
+        "mirror",
+        "group",
+        "combine",
+        "extrude"
+      ]
+    },
+    "parameters": {
+      "type": "object"
+    }
+  }
+},"constraint": {
+      "type": "object",
+      "required": [
+        "type",
+        "objects"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "minLength": 1
+        },
+       "objects": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "parameters": {
+          "type": "object"
+        }
+      }
+    }
+  }
+}

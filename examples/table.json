@@ -1,0 +1,69 @@
+{
+  "schema_version": "1.0",
+  "scene": {
+    "name": "procedural_table",
+    "units": "meters"
+  },
+  "operations": [
+    {
+      "id": "op_001",
+      "type": "create_box",
+      "parameters": {
+        "id": "table_top",
+        "width": 1.5,
+        "height": 0.05,
+        "depth": 0.8
+      }
+    },
+    {
+      "id": "op_002",
+      "type": "translate",
+      "target": "table_top",
+      "parameters": {
+        "target": "table_top",
+        "offset": [0.0, 0.75, 0.0]
+      }
+    },
+    {
+      "id": "op_003",
+      "type": "create_cylinder",
+      "parameters": {
+        "id": "leg_1",
+        "radius": 0.04,
+        "height": 0.75
+      }
+    },
+    {
+      "id": "op_004",
+      "type": "translate",
+      "target": "leg_1",
+      "parameters": {
+        "target": "leg_1",
+        "offset": [-0.65, 0.375, -0.3]
+      }
+    },
+    {
+      "id": "op_005",
+      "type": "duplicate",
+      "target": "leg_1",
+      "parameters": {
+        "target": "leg_1",
+        "new_id": "leg_2"
+      }
+    },
+    {
+      "id": "op_006",
+      "type": "translate",
+      "target": "leg_2",
+      "parameters": {
+        "target": "leg_2",
+        "offset": [1.3, 0.0, 0.0]
+      }
+    }
+  ],
+  "constraints": [],
+  "validation": {
+    "expected_object_count": 3,
+    "expected_operation_count": 6
+  }
+}

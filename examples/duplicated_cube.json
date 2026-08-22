@@ -1,0 +1,42 @@
+{
+  "schema_version": "1.0",
+  "scene": {
+    "name": "duplicated_cube",
+    "units": "meters"
+  },
+  "operations": [
+    {
+      "id": "op_001",
+      "type": "create_box",
+      "parameters": {
+        "id": "box_01",
+        "width": 1.0,
+        "height": 1.0,
+        "depth": 1.0
+      }
+    },
+    {
+      "id": "op_002",
+      "type": "duplicate",
+      "target": "box_01",
+      "parameters": {
+        "target": "box_01",
+        "new_id": "box_02"
+      }
+    },
+    {
+      "id": "op_003",
+      "type": "translate",
+      "target": "box_02",
+      "parameters": {
+        "target": "box_02",
+        "offset": [2.0, 0.0, 0.0]
+      }
+    }
+  ],
+  "constraints": [],
+  "validation": {
+    "expected_object_count": 2,
+    "expected_operation_count": 3
+  }
+}

@@ -1,0 +1,22 @@
+{
+    "schema_version": "1.0",
+    "scene": {
+        "name": "simple_sphere",
+        "units": "meters"
+    },
+    "operations": [
+        {
+            "id": "op_001",
+            "type": "create_sphere",
+            "parameters": {
+                "id": "sphere_01",
+                "radius": 1
+            }
+        }
+    ],
+    "constraints": [],
+    "validation": {
+        "expected_object_count": 1,
+        "expected_operation_count": 1
+    }
+}

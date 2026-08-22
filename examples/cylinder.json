@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0",
+  "scene": {
+    "name": "simple_cylinder",
+    "units": "meters"
+  },
+  "operations": [
+    {
+      "id": "op_001",
+      "type": "create_cylinder",
+      "parameters": {
+        "id": "cyl_01",
+        "radius": 0.5,
+        "height": 2.0
+      }
+    }
+  ],
+  "constraints": [],
+  "validation": {
+    "expected_object_count": 1,
+    "expected_operation_count": 1
+  }
+}

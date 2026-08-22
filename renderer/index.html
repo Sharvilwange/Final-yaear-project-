@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Procedural 3D Renderer</title>
+
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-dark: #0f172a;
+      --bg-card: #1e293b;
+      --bg-card-hover: #334155;
+      --border-color: #334155;
+      --accent-color: #3b82f6;
+      --accent-hover: #2563eb;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --success-bg: rgba(16, 185, 129, 0.15);
+      --success-text: #34d399;
+      --error-bg: rgba(239, 68, 68, 0.15);
+      --error-text: #f87171;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background-color: rgba(30, 41, 59, 0.8);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-icon {
+      width: 28px;
+      height: 28px;
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+      color: #fff;
+    }
+
+    .brand-title {
+      font-weight: 700;
+      font-size: 18px;
+      letter-spacing: -0.02em;
+      background: linear-gradient(to right, #f8fafc, #94a3b8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 9999px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .badge-success {
+      background-color: var(--success-bg);
+      color: var(--success-text);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .badge-error {
+      background-color: var(--error-bg);
+      color: var(--error-text);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .main-container {
+      display: flex;
+      flex: 1;
+      height: calc(100vh - 57px);
+    }
+
+    .viewport-panel {
+      flex: 1;
+      position: relative;
+      background-color: #0b0f19;
+    }
+
+    #webgl-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .sidebar {
+      width: 420px;
+      background-color: var(--bg-card);
+      border-left: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .sidebar-section {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .sidebar-title {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
+    .control-group {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    select, button {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 13px;
+      outline: none;
+      transition: all 0.15s ease;
+    }
+
+    select {
+      flex: 1;
+      cursor: pointer;
+    }
+
+    select:hover, button:hover {
+      border-color: var(--accent-color);
+    }
+
+    button {
+      cursor: pointer;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .btn-primary {
+      background-color: var(--accent-color);
+      border-color: var(--accent-color);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--accent-hover);
+    }
+
+    .file-input-wrapper {
+      position: relative;
+      overflow: hidden;
+      display: inline-block;
+    }
+
+    .file-input-wrapper input[type=file] {
+      font-size: 100px;
+      position: absolute;
+      left: 0;
+      top: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .info-card {
+      background-color: var(--bg-dark);
+      padding: 10px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--border-color);
+    }
+
+    .info-label {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .info-value {
+      font-size: 14px;
+      font-weight: 600;
+      margin-top: 2px;
+    }
+
+    .editor-section {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 16px 20px;
+      min-height: 0;
+    }
+
+    .editor-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    textarea#json-editor {
+      flex: 1;
+      width: 100%;
+      background-color: #090d16;
+      color: #e2e8f0;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      line-height: 1.5;
+      resize: none;
+      outline: none;
+      white-space: pre;
+    }
+
+    textarea#json-editor:focus {
+      border-color: var(--accent-color);
+    }
+
+    .status-panel {
+      padding: 12px 20px;
+      border-top: 1px solid var(--border-color);
+      font-size: 12px;
+      max-height: 120px;
+      overflow-y: auto;
+    }
+
+    .status-success {
+      color: var(--success-text);
+    }
+
+    .status-error {
+      color: var(--error-text);
+      font-family: 'JetBrains Mono', monospace;
+      word-break: break-all;
+    }
+
+    .overlay-controls {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 12px;
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+
+    .overlay-controls span {
+      color: var(--text-main);
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <div class="brand-icon">3D</div>
+      <div class="brand-title">Procedural Scene Interpreter</div>
+    </div>
+    <div id="status-badge" class="badge badge-success">Ready</div>
+  </header>
+
+  <div class="main-container">
+    <div class="viewport-panel">
+      <canvas id="webgl-canvas"></canvas>
+      <div class="overlay-controls">
+        <span>Controls:</span> Left-Click + Drag: Rotate | Right-Click + Drag: Pan | Scroll: Zoom
+      </div>
+    </div>
+
+    <div class="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-title">Scene Source</div>
+        <div class="control-group">
+          <select id="example-select">
+            <option value="cube.json">cube.json (Box)</option>
+            <option value="translated_cube.json">translated_cube.json (Translation)</option>
+            <option value="repeated_boxes.json">repeated_boxes.json (Repeat)</option>
+            <option value="sphere.json">sphere.json (Sphere)</option>
+            <option value="cylinder.json">cylinder.json (Cylinder)</option>
+            <option value="cone.json">cone.json (Cone)</option>
+            <option value="rotated_cube.json">rotated_cube.json (Rotation)</option>
+            <option value="scaled_cube.json">scaled_cube.json (Scale)</option>
+            <option value="duplicated_cube.json">duplicated_cube.json (Duplicate)</option>
+            <option value="table.json">table.json (Table Assembly)</option>
+            <option value="invalid_unknown_object">TEST: Unknown Object Error</option>
+          </select>
+          <div class="file-input-wrapper">
+            <button class="btn">Upload JSON</button>
+            <input type="file" id="file-upload" accept=".json">
+          </div>
+        </div>
+
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="info-label">Objects Registered</div>
+            <div class="info-value" id="object-count">0</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">Operations Executed</div>
+            <div class="info-value" id="operation-count">0</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="editor-section">
+        <div class="editor-header">
+          <div class="sidebar-title" style="margin-bottom:0;">Canonical JSON Editor</div>
+          <button id="apply-btn" class="btn-primary" style="padding:4px 10px; font-size:12px;">Run Scene</button>
+        </div>
+        <textarea id="json-editor" spellcheck="false"></textarea>
+      </div>
+
+      <div class="status-panel" id="status-panel">
+        <div class="status-success">System initialized. Interpreter ready.</div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
