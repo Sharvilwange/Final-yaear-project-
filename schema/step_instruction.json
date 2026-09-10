@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AI Procedural 3D Step Instruction",
+  "type": "object",
+  "required": [
+    "step_id",
+    "instruction",
+    "target"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "step_id": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "instruction": {
+      "type": "string",
+      "minLength": 1
+    },
+    "target": {
+      "type": "string",
+      "minLength": 1
+    },
+    "requirements": {
+      "type": "object"
+    },
+    "is_complete": {
+      "type": "boolean",
+      "description": "Set to true by the Planner when the user goal has been fully satisfied."
+    }
+  }
+}
